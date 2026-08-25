@@ -248,16 +248,17 @@ checkpoints/Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix/saved_model/best
 
 运行测试前必须确认该文件存在。若使用其他实验权重，应在 YAML 中将 `Model.exp_name` 改为该权重所在目录名，或将权重放到上述约定位置。
 
-### 7.2 Hamlyn 75 数据路径
+### 7.2 Hamlyn数据路径
 
-测试数据路径目前直接写在 `PostTrain_Hamlyn_75.py` 的主程序中，而不在 YAML 中：
+测试数据路径目前直接写在 `PostTrain_Hamlyn_75.py` 的主程序中，而不在 YAML 中，
+后续要测试不同重叠数据集的效果，直接在该 `PostTrain_Hamlyn_75.py` 文件中修改以下路径：
 
 ```python
 root = "/big_data/szm/H8amlyn_8192_Mask_3332_new_mutual_Low_Overlap/test1"
 fpfh_path = "/big_data/szm/H8amlyn_8192_Mask_3332_new_mutual_Low_Overlap/fpft_file1"
 ```
 
-迁移服务器后，请修改这两个值为实际的 Hamlyn 75 数据目录和 FPFH 目录。二者中的 `.npz` 文件必须一一对应，且文件名需满足代码当前的 `rectified<序列>_<序列>.npz` 排序规则，否则数据与 FPFH 伪对应可能错配。
+若要测试其余重叠数据集，请修改这两个路径值为实际的 Hamlyn 各重叠数据集目录和 FPFH 目录。(其余重叠率数据集在目录"/big_data/szm/H8amlyn_8192_Mask_3332_new_mutual_xxx"下)
 
 Hamlyn 样本 `.npz` 应包含与训练集相同的基础字段：`mask_point1`、`mask_color1`、`mask_point2`、`mask_color2`、`mask_gt1`、`mask_gt2`、`mask_gt_pc`。每个 FPFH `.npz` 必须包含：
 
