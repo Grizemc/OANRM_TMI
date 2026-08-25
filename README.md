@@ -3,7 +3,7 @@
 本项目用于带颜色信息的点云对应预测，模型输出源点云到目标点云的预测坐标，以及两帧之间重叠区域的掩码。当前推荐流程为：
 
 1. 使用服务器上的 **mix 数据集**训练基础模型。
-2. 使用训练得到的 `best_model.t7`，在 Hamlyn 75 数据上执行逐样本无监督后训练（post-training）与结果导出。
+2. 使用训练得到的 `best_model.t7`，在 Hamlyn 数据上执行逐样本无监督后训练（post-training）与结果导出。
 
 本文档对应的入口文件如下：
 
@@ -12,7 +12,7 @@
 | 基础模型训练 | `mask_main_small_normalizeOfSource_caixiang_mix.py` | `config/Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix.yaml` |
 | Hamlyn 75 后训练/测试 | `PostTrain_Hamlyn_75.py` | `config/Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix.yaml` |
 
-> 所有命令均应在项目根目录（即本 `Readme.md` 所在目录）运行。代码使用了 `cp` 命令、CUDA 扩展和 Linux 风格的数据路径，推荐在 Linux GPU 服务器上运行。
+> 所有命令均应在项目根目录（即本 `README.md` 所在目录）运行。代码使用了 `cp` 命令、CUDA 扩展和 Linux 风格的数据路径，推荐在 Linux GPU 服务器上运行。
 
 ## 1. 目录说明
 
