@@ -1,0 +1,54 @@
+# 测试使用Max_index，使用索引取值，而不是概率。
+DATA:
+  data_dir: /big_data/szm/M8ICCAI_8192_Mask_19055_new_mutual_90
+  num_points: 8192  # point number [default: 4096]
+  cuda: True
+  normalize: True
+
+Model:
+  exp_name: Zall_focal_loss1
+  model_type: Base_flow
+  npoints: [1024, 512, 256, 64]
+  corr_type: softmax_topkpoint_topkmask
+  fuse_type: True
+  loss_type: one_focal_loss
+  alpha: 0.25
+  gamma: 2.0
+  up_moudle_type: source
+  up_type: False
+  color_aug: True
+  correlation_loss: False
+  dataset: normal
+  average_coordinate: False
+
+
+Train:
+  train: True
+  lr:  0.001
+  lr_multidecay: True
+  gt_factor: 8.0
+  charm_factor: 8.0
+  smooth_factor: 5.0
+  mask_factor: 100.0
+  multiplier: 0.1
+  momentum: 0.9
+  weight_decay: 0.001
+  weight:  # path1 to initial weight (default: none)
+  dual: False
+  num_workers: 2  # data loader workers
+  train_batch: 32 # batch size for training
+  epochs: 150
+  step_epoch: 30
+  manual_seed: 0
+  resume:
+  optimizer: adam
+  learning_ratedeacy: cosine
+  use_color: False
+  top_k: True
+  hidden: [8, 16, 16]
+  dual_softmax: False
+  regu: True
+  multi: True
+
+TEST:
+  test_batch: 16
