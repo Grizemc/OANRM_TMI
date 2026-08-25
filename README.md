@@ -34,7 +34,7 @@ Chamfer Distance CUDA 算子
 ├── checkpoints/
 │   └── Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix/
 │       └── saved_model/best_model.t7                  # 训练最佳权重 / 测试加载权重
-└── Readme.md
+└── README.md
 ```
 
 ## 2. 环境与依赖
