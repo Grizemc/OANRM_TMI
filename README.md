@@ -10,7 +10,8 @@
 | 用途 | 入口文件 | 配置文件 |
 | --- | --- | --- |
 | 基础模型训练 | `mask_main_small_normalizeOfSource_caixiang_mix.py` | `config/Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix.yaml` |
-| Hamlyn 75 后训练/测试 | `PostTrain_Hamlyn_75.py` | `config/Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix.yaml` |
+| Hamlyn 微调后训练 | `PostTrain_Hamlyn_75.py` | `config/Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix.yaml` |
+| 测试评估 | `ReadData/FinalEval/FinalReadHamlynResultMore.py` | `config/Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix.yaml` |
 
 > 所有命令均应在项目根目录（即本 `README.md` 所在目录）运行。代码使用了 `cp` 命令、CUDA 扩展和 Linux 风格的数据路径，推荐在 Linux GPU 服务器上运行。
 
@@ -228,7 +229,7 @@ tensorboard --logdir checkpoints/Source_Flow_softmax_topkpoint_topmask_fuse_8192
 
 显存不足时，优先下调 `train_batch`，其次才考虑下调 `num_points`；若修改 `num_points`，训练集和测试集应保持一致，并确认网络相关参数与显存容量相适配。
 
-## 7. Hamlyn 75 后训练与测试
+## 7. Hamlyn 后训练与测试
 
 `PostTrain_Hamlyn_75.py` 不进行基础模型的常规验证，而是先加载 mix 训练权重，再对 Hamlyn 样本进行逐个无监督后训练。它依赖 Chamfer Distance、点云法向估计以及 FPFH 伪对应。
 
