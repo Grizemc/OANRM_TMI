@@ -10,7 +10,7 @@
 | 用途 | 入口文件 | 配置文件 |
 | --- | --- | --- |
 | 基础模型训练 | `mask_main_small_normalizeOfSource_caixiang_mix.py` | `config/Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix.yaml` |
-| Hamlyn 微调后训练 | `PostTrain_Hamlyn_75.py` | `config/Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix.yaml` |
+| Hamlyn 微调后训练 | `PostTrain_Hamlyn_75_2.py` | `config/Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix.yaml` |
 | 测试评估 | `ReadData/FinalEval/FinalReadHamlynResultMore.py` | `config/Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix.yaml` |
 
 > 所有命令均应在项目根目录（即本 `README.md` 所在目录）运行。代码使用了 `cp` 命令、CUDA 扩展和 Linux 风格的数据路径，推荐在 Linux GPU 服务器上运行。
@@ -20,7 +20,7 @@
 ```text
 Paconv_730/
 ├── mask_main_small_normalizeOfSource_caixiang_mix.py   # mix 数据集训练入口
-├── PostTrain_Hamlyn_75.py                              # Hamlyn 75 后训练/测试入口
+├── PostTrain_Hamlyn_75_2.py                              # Hamlyn 75 后训练/测试入口
 ├── config/
 │   └── Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix.yaml
 │                                                       # 推荐使用的训练与测试配置
@@ -66,7 +66,7 @@ python mask_main_small_normalizeOfSource_caixiang_mix.py \
 测试脚本默认也指向同名配置；为避免当前目录错误，仍建议显式传参：
 
 ```bash
-python PostTrain_Hamlyn_75.py \
+python PostTrain_Hamlyn_75_2.py \
   --config config/Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix.yaml
 ```
 
@@ -147,7 +147,7 @@ DATA:
 | 脚本 | 当前位置 | 默认值 |
 | --- | --- | --- |
 | `mask_main_small_normalizeOfSource_caixiang_mix.py` | 文件开头的 `CUDA_VISIBLE_DEVICES` | `6` |
-| `PostTrain_Hamlyn_75.py` | 文件开头的 `CUDA_VISIBLE_DEVICES` | `5` |
+| `PostTrain_Hamlyn_75_2.py` | 文件开头的 `CUDA_VISIBLE_DEVICES` | `5` |
 
 请在运行前将对应脚本中的值改为本服务器可用 GPU 编号，例如：
 
@@ -231,7 +231,7 @@ tensorboard --logdir checkpoints/Source_Flow_softmax_topkpoint_topmask_fuse_8192
 
 ## 7. Hamlyn 后训练与测试
 
-`PostTrain_Hamlyn_75.py` 不进行基础模型的常规验证，而是先加载 mix 训练权重，再对 Hamlyn 样本进行逐个无监督后训练。它依赖 Chamfer Distance、点云法向估计以及 FPFH 伪对应。
+`PostTrain_Hamlyn_75_2.py` 不进行基础模型的常规验证，而是先加载 mix 训练权重，再对 Hamlyn 样本进行逐个无监督后训练。它依赖 Chamfer Distance、点云法向估计以及 FPFH 伪对应。
 
 ### 7.1 权重位置
 
@@ -251,8 +251,8 @@ checkpoints/Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix/saved_model/best
 
 ### 7.2 Hamlyn数据路径
 
-测试数据路径目前直接写在 `PostTrain_Hamlyn_75.py` 的主程序中，而不在 YAML 中，
-后续要测试不同重叠数据集的效果，直接在该 `PostTrain_Hamlyn_75.py` 文件中修改以下路径：
+测试数据路径目前直接写在 `PostTrain_Hamlyn_75_2.py` 的主程序中，而不在 YAML 中，
+后续要测试不同重叠数据集的效果，直接在该 `PostTrain_Hamlyn_75_2.py` 文件中修改以下路径：
 
 ```python
 root = "/big_data/szm/H8amlyn_8192_Mask_3332_new_mutual_Low_Overlap/test1"
@@ -272,7 +272,7 @@ matches_list0    # [K, 2]，每行分别是源点索引与目标点索引
 确认 GPU 编号、权重路径、Hamlyn 数据路径、FPFH 数据路径后运行：
 
 ```bash
-python PostTrain_Hamlyn_75.py \
+python PostTrain_Hamlyn_75_2.py \
   --config config/Source_Flow_softmax_topkpoint_topmask_fuse_8192_mix.yaml
 ```
 
@@ -355,5 +355,5 @@ fpfh_Post_Train_Hamlyn_no_rotation_75_datiao_1017/
 - [ ] `DATA.data_dir` 指向服务器的 mix 数据集根目录，并含有 `train/`、`test/`。
 - [ ] 已确认训练/测试脚本内的 GPU 编号。
 - [ ] 测试前存在 `checkpoints/<exp_name>/saved_model/best_model.t7`。
-- [ ] Hamlyn 测试前已修改 `PostTrain_Hamlyn_75.py` 中的 `root` 与 `fpfh_path`。
+- [ ] Hamlyn 测试前已修改 `PostTrain_Hamlyn_75_2.py` 中的 `root` 与 `fpfh_path`。
 - [ ] Hamlyn 数据与 FPFH 文件数量、名称和顺序一致。
